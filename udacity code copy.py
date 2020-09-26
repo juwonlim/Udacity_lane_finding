@@ -68,7 +68,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 import cv2
-%matplotlib inline
+#%matplotlib inline
 
 
 #Read in an Image
@@ -89,16 +89,17 @@ plt.imshow(image)
 #Some OpenCV functions (beyond those introduced in the lesson)
 #that might be useful for this project are:
 
-''' 
+'''
 cv2.inRange() for color selection
 cv2.fillPoly() for regions selection
 cv2.line() to draw lines on an image given endpoints
-cv2.addWeighted() to coadd / overlay two images cv2.cvtColor() 
+cv2.addWeighted() to coadd / overlay two images cv2.cvtColor()
 to grayscale or change color cv2.imwrite() to output images to file
 cv2.bitwise_and() to apply a mask to an image
 '''
 
-#Check out the OpenCV documentation to learn about these and discover even more awesome functionality!
+#Check out the OpenCV documentation to learn about these and
+#discover even more awesome functionality!
 
 #Helper Functions
 #Below are some helper functions to help get you started. They should look familiar from the lesson!
@@ -113,6 +114,7 @@ def grayscale(img):
     but NOTE: to see the returned image as grayscale
     (assuming your grayscaled image is called 'gray')
     you should call plt.imshow(gray, cmap='gray')"""
+
     return cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     # Or use BGR2GRAY if you read an image with cv2.imread()
     # return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -176,11 +178,13 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=2):
 
 
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
+
     """
     `img` should be the output of a Canny transform.
 
     Returns an image with hough lines drawn.
     """
+
     lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]), minLineLength=min_line_len, maxLineGap=max_line_gap)
     line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
     draw_lines(line_img, lines)
@@ -214,11 +218,14 @@ import os
 os.listdir("test_images/")
 '''
 Build a Lane Finding Pipeline
-Build the pipeline and run your solution on all test_images. Make copies into the test_images_output directory, and you can use the images in your writeup report.
+Build the pipeline and run your solution on all test_images.
+Make copies into the test_images_output directory,
+and you can use the images in your writeup report.
 '''
 
 '''
-Try tuning the various parameters, especially the low and high Canny thresholds as well as the Hough lines parameters.
+Try tuning the various parameters,
+especially the low and high Canny thresholds as well as the Hough lines parameters.
 '''
 
 # TODO: Build your pipeline that will draw lane lines on the test_images
@@ -233,17 +240,26 @@ solidWhiteRight.mp4
 
 solidYellowLeft.mp4
 
-Note: if you get an import error when you run the next cell, try changing your kernel (select the Kernel menu above --> Change Kernel). Still have problems? Try relaunching Jupyter Notebook from the terminal prompt. Also, consult the forums for more troubleshooting tips.
+Note: if you get an import error when you run the next cell,
+try changing your kernel (select the Kernel menu above --> Change Kernel).
+Still have problems? Try relaunching Jupyter Notebook from the terminal prompt.
+Also, consult the forums for more troubleshooting tips.
 
 If you get an error that looks like this:
 
 NeedDownloadError: Need ffmpeg exe.
 You can download it by calling:
 imageio.plugins.ffmpeg.download()
-Follow the instructions in the error message and check out this forum post for more troubleshooting tips across operating systems.
+Follow the instructions in the error message and
+check out this forum post for more troubleshooting tips across operating systems.
 '''
 
 
+
+
+
+
+#여기서 부터는 위의 코드로 검출된 라인을 영상과 함꼐 저장하는 코드
 
 # Import everything needed to edit/save/watch video clips
 from moviepy.editor import VideoFileClip
@@ -267,19 +283,30 @@ clip1 = VideoFileClip("test_videos/solidWhiteRight.mp4")
 white_clip = clip1.fl_image(process_image) #NOTE: this function expects color images!!
 %time white_clip.write_videofile(white_output, audio=False)
 
-#Play the video inline, or if you prefer find the video in your filesystem (should be in the same directory) and play it in your video player of choice.
+#Play the video inline, or if you prefer find the video in your filesystem
+# (should be in the same directory) and play it in your video player of choice.
 
 HTML("""
 <video width="960" height="540" controls>
   <source src="{0}">
 </video>
 """.format(white_output))
-''' 
+'''
 Improve the draw_lines() function
-At this point, if you were successful with making the pipeline and tuning parameters, you probably have the Hough line segments drawn onto the road, but what about identifying the full extent of the lane and marking it clearly as in the example video (P1_example.mp4)? Think about defining a line to run the full length of the visible lane based on the line segments you identified with the Hough Transform. As mentioned previously, try to average and/or extrapolate the line segments you've detected to map out the full extent of the lane lines. You can see an example of the result you're going for in the video "P1_example.mp4".
-
-Go back and modify your draw_lines function accordingly and try re-running your pipeline. The new output should draw a single, solid line over the left lane line and a single, solid line over the right lane line. The lines should start from the bottom of the image and extend out to the top of the region of interest.
-
+At this point, if you were successful with making the pipeline and tuning parameters,
+you probably have the Hough line segments drawn onto the road,
+but what about identifying the full extent of the lane and marking it clearly
+as in the example video (P1_example.mp4)?
+Think about defining a line to run the full length of the visible lane
+based on the line segments you identified with the Hough Transform.
+As mentioned previously, try to average and/or extrapolate the line segments
+you've detected to map out the full extent of the lane lines.
+You can see an example of the result you're going for in the video "P1_example.mp4".
+Go back and modify your draw_lines function accordingly and try re-running your pipeline.
+The new output should draw a single, solid line over the left lane line and a single,
+solid line over the right lane line.
+The lines should start from the bottom of the image and
+extend out to the top of the region of interest.
 Now for the one with the solid yellow lane on the left. This one's more tricky!
 '''
 
@@ -317,6 +344,7 @@ challenge_output = 'test_videos_output/challenge.mp4'
 ## Where start_second and end_second are integer values representing the start and end of the subclip
 ## You may also uncomment the following line for a subclip of the first 5 seconds
 ##clip3 = VideoFileClip('test_videos/challenge.mp4').subclip(0,5)
+
 clip3 = VideoFileClip('test_videos/challenge.mp4')
 challenge_clip = clip3.fl_image(process_image)
 %time challenge_clip.write_videofile(challenge_output, audio=False)
